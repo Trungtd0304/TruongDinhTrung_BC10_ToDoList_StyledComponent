@@ -2,6 +2,9 @@
   "name": "todolist_redux",
   "version": "0.1.0",
   "private": true,
+  "resolutions": {
+    "styled-components": "^5"
+  },
   "dependencies": {
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
@@ -40,8 +43,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "resolutions": {
-    "styled-components": "^5"
   }
 }
