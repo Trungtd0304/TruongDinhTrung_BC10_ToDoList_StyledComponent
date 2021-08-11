@@ -18,7 +18,12 @@ import { Button } from "../Components/Button";
 import { Table, Tr, Td, Th, Thead, Tbody } from "../Components/Table";
 import { connect } from "react-redux";
 //add action dua du lieu len reducer
-import { addTaskAction, changeTheme } from "../redux/actions/ToDoListAction";
+import {
+  addTaskAction,
+  changeTheme,
+  deleteTaskAction,
+  doneTaskAction,
+} from "../redux/actions/ToDoListAction";
 import { arrTheme } from "../Themes/ThemeManager";
 
 class ToDoList extends Component {
@@ -38,10 +43,20 @@ class ToDoList extends Component {
               <Button className="ml-1">
                 <i className="fa fa-edit"></i>
               </Button>
-              <Button className="ml-1">
+              <Button
+                onClick={() => {
+                  this.props.dispatch(doneTaskAction(task.id));
+                }}
+                className="ml-1"
+              >
                 <i className="fa fa-check"></i>
               </Button>
-              <Button className="ml-1">
+              <Button
+                onClick={() => {
+                  this.props.dispatch(deleteTaskAction(task.id));
+                }}
+                className="ml-1"
+              >
                 <i className="fa fa-trash"></i>
               </Button>
             </Th>
@@ -60,7 +75,13 @@ class ToDoList extends Component {
           <Tr key={index}>
             <Th style={{ verticalAlign: "middle" }}>{task.taskName}</Th>
             <Th className="text-right">
-              <Button className="ml-1">
+              <Button
+                onClick={() => {
+                  this.props.dispatch(deleteTaskAction(task.id));
+                }}
+                className="ml-1"
+                className="ml-1"
+              >
                 <i className="fa fa-trash"></i>
               </Button>
             </Th>
