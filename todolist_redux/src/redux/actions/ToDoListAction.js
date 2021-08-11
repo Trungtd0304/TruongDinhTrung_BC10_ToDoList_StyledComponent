@@ -5,7 +5,7 @@ export const addTaskAction = (newTask) => ({
   newTask,
 });
 
-export const changeTheme = (value) => ({
+export const changeTheme = (themeId) => ({
   type: change_theme,
-  value,
+  themeId,
 });

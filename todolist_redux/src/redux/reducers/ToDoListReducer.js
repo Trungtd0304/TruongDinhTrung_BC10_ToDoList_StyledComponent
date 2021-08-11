@@ -41,7 +41,7 @@ const ToDoListReducer = (state = initialState, action) => {
 
     case change_theme: {
       //tim theme dua vao tuy tron cua user
-      let theme = arrTheme.find((theme) => theme.id == action.value);
+      let theme = arrTheme.find((theme) => theme.id == action.themeId);
 
       if (theme) {
         //set lai state cho them
