@@ -17,12 +17,19 @@ import { TextField, Label, Input } from "../Components/TextField";
 import { Button } from "../Components/Button";
 import { Table, Tr, Td, Th, Thead, Tbody } from "../Components/Table";
 import { connect } from "react-redux";
+//add action dua du lieu len reducer
+import { addTaskAction, changeTheme } from "../redux/actions/ToDoListAction";
+import { arrTheme } from "../Themes/ThemeManager";
 
 class ToDoList extends Component {
+  state = {
+    //tao state chua cac handerChange
+    taskName: "",
+  };
   // tạo hàm render task chưa xog
   renderTaskToDo = () => {
     return this.props.taskList
-      .filter((task) => task.done)
+      .filter((task) => !task.done)
       .map((task, index) => {
         return (
           <Tr key={index}>
@@ -47,7 +54,7 @@ class ToDoList extends Component {
 
   renderTaskCompleted = () => {
     return this.props.taskList
-      .filter((task) => !task.done)
+      .filter((task) => task.done)
       .map((task, index) => {
         return (
           <Tr key={index}>
@@ -62,20 +69,49 @@ class ToDoList extends Component {
       });
   };
 
+  //tạo hàm render theme import trang theme đã có
+  renderTheme = () => {
+    return arrTheme.map((theme, index) => {
+      return <option value={theme.id}>{theme.name}</option>;
+    });
+  };
+
   render() {
     const { themeToDoList } = this.props;
     return (
       //vi tri dio theme
       <ThemeProvider theme={themeToDoList}>
         <Container className="w-50">
-          <Dropdown>
-            <option>Dark theme</option>
-            <option>Light theme</option>
-            <option>Primary theme</option>
+          <Dropdown
+            onChange={(e) => {
+              let { value } = e.target;
+              //dispatch value len reudcer
+              this.props.dispatch(changeTheme(value));
+            }}
+          >
+            {this.renderTheme()}
           </Dropdown>
           <Heading3>To do list</Heading3>
-          <TextField label="Task name" className="w-50" />
-          <Button className="ml-2">
+          <TextField
+            name="taskName"
+            onChange={(e) => {
+              //taoj phuong thuc hung du lieu tu nguoi nhap
+              this.setState({ taskName: e.target.value });
+            }}
+            label="Task name"
+            className="w-50"
+          />
+          <Button
+            onClick={() => {
+              //Lấy thông tin người dùng nhập từ inputs
+              let { taskName } = this.state;
+              //Tạo ra 1 task object
+              let newTask = { id: Date.now(), taskName: taskName, done: false };
+              //Đưa task object lên redux thông qua phương thức dispatch
+              this.props.dispatch(addTaskAction(newTask));
+            }}
+            className="ml-2"
+          >
             <i className="fa fa-plus mr-1"></i>Add task
           </Button>
           <Button className="ml-2">
