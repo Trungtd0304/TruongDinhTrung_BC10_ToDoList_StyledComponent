@@ -5,6 +5,8 @@ import {
   change_theme,
   delete_task,
   done_task,
+  edit_task,
+  update_task,
 } from "../types/ToDoListTypes";
 
 const initialState = {
@@ -15,6 +17,7 @@ const initialState = {
     { id: 3, taskName: "task 3", done: true },
     { id: 4, taskName: "task 4", done: false },
   ],
+  taskEdit: { id: -1, taskName: "", done: false },
 };
 
 const ToDoListReducer = (state = initialState, action) => {
@@ -88,6 +91,27 @@ const ToDoListReducer = (state = initialState, action) => {
         taskList: state.taskList.filter((task) => task.id !== action.taskId),
       };
     }
+
+    case edit_task: {
+      return { ...state, taskEdit: action.task };
+    }
+
+    case update_task: {
+      //chinh sua lai task name cua taskEdit
+      state.taskEdit = { ...state.taskEdit, taskName: action.taskName };
+      //tim trong taskList cap nhat lai taskEdit nguoi dung update
+      let taskUpdate = [...state.taskList];
+      let index = taskUpdate.findIndex((task) => task.id === state.taskEdit.id);
+
+      if (index !== -1) {
+        taskUpdate[index] = state.taskEdit;
+      }
+      state.taskList = taskUpdate;
+      //gan id sau update =1 de co the sua lan tiep theo
+      state.taskEdit = { id: "-1", taskName: "", done: false };
+      return { ...state };
+    }
+
     default:
       return { ...state };
   }
